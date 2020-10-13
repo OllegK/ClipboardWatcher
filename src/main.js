@@ -1,7 +1,7 @@
 const electron = require('electron')
 const path = require('path')
 
-const { app, Tray, Menu, clipboard, globalShortcut } = electron
+const { app, Tray, Menu, clipboard } = electron
 
 const STACK_SIZE = 5;
 const ITEM_MAX_LENGTH = 20;
@@ -18,7 +18,6 @@ function formatMenuTemplateForStack(clipboard, stack) {
     return stack.map ((item, i) => {return {
         label: `Copy: ${formatItem(item)}`,
         click: _ => clipboard.writeText(item),
-        accelerator: `Cmd + Alt + ${i + 1}`,
     }})
 }
 
@@ -34,15 +33,6 @@ function checkClipboardForChange(clipboard, onChange) {
     }, 1000)
 }
 
-function registerShortcuts(globalShortcut, clipboard, stack) {
-    globalShortcut.unregisterAll()
-    for (let i = 0; i < STACK_SIZE; ++i) {
-        globalShortcut.register(`Cmd + Alt + ${i+1}`, _ => {
-            clipboard.writeText(stack[i])
-        })
-    }
-}
-
 app.on('ready', _ => {
     let stack = []
     const tray = new Tray(path.join('src', 'icon32.png'))
@@ -51,10 +41,5 @@ app.on('ready', _ => {
     checkClipboardForChange(clipboard, text => {
         stack = addToStack(text, stack)
         tray.setContextMenu(Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)))
-        registerShortcuts(globalShortcut, clipboard, stack)
     })
-})
-
-app.on('will-quit', _ => {
-    globalShortcut.unregisterAll()
 })
