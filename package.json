@@ -1,0 +1,12 @@
+{
+  "name": "ClipboardWatcher",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron-prebuilt": "^1.4.13"
+  }
+}
