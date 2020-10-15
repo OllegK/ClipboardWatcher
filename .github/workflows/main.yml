@@ -42,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: success()
         with:
-          name: <App name>-nightly
+          name: ClipboardWatcher-nightly
           path: out/**/*!(.zip)
