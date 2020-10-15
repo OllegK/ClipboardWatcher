@@ -1,3 +1,4 @@
+// const { autoUpdater } = require("electron-updater")
 const electron = require('electron')
 const path = require('path')
 
@@ -15,7 +16,7 @@ function formatItem(item) {
 }
 
 function formatMenuTemplateForStack(clipboard, stack) {
-    return stack.map ((item, i) => {return {
+    return stack.map ((item, i) => { return {
         label: `Copy: ${formatItem(item)}`,
         click: _ => clipboard.writeText(item),
     }})
@@ -34,8 +35,10 @@ function checkClipboardForChange(clipboard, onChange) {
 }
 
 app.on('ready', _ => {
+    // autoUpdater.checkForUpdatesAndNotify();
+    
     let stack = []
-    const tray = new Tray(path.join('src', 'icon32.png'))
+    const tray = new Tray(path.join(__dirname, 'icon16.png'))
     tray.setContextMenu (Menu.buildFromTemplate([{ label: '<Empty>', enabled: false }]))
 
     checkClipboardForChange(clipboard, text => {

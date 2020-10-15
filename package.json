@@ -1,13 +1,41 @@
 {
-  "name": "ClipboardWatcher",
-  "version": "1.0.0",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "electron-builder": "^22.9.1",
-    "electron-prebuilt": "^1.4.13"
-  }
+	"name": "ClipboardWatcher",
+	"version": "1.0.0",
+	"main": "src/main.js",
+	"scripts": {
+		"start": "electron .",
+		"postinstall": "electron-builder install-app-deps",
+		"build": "electron-builder --windows --x64",
+		"release": "electron-builder --windows --publish always"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"electron-builder": "^22.9.1",
+		"electron-prebuilt": "^1.4.13"
+	},
+	"build": {
+		"appId": "com.ollegk.clipboard.watcher",
+		"productName": "Clipboard Watcher",
+		"mac": {
+			"category": "public.app-category.lifestyle"
+		},
+		"dmg": {
+			"icon": false
+		},
+		"linux": {
+			"target": [
+				"AppImage"
+			],
+			"category": "Office"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }  
+	},
+	"dependencies": {
+		"electron-updater": "^4.3.5"
+	}
 }
