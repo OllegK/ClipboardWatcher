@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "electron .",
 		"postinstall": "electron-builder install-app-deps",
-		"build": "electron-builder --windows --x64",
+		"build2": "electron-builder --windows --x64",
 		"release": "electron-builder --windows --publish always"
 	},
 	"license": "MIT",
