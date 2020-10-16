@@ -21,7 +21,8 @@ function formatMenuTemplateForStack(clipboard, stack) {
         click: _ => clipboard.writeText(item),
     }})
     arr.splice(0, 0, {
-        label: `Version ${app.getVersion()}`
+        label: `Exit ${app.getVersion()}`, 
+        click: _ => app.quit(),  
     })
         
     return arr
@@ -44,7 +45,10 @@ app.on('ready', _ => {
     
     let stack = []
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
-    tray.setContextMenu (Menu.buildFromTemplate([{ label: `Version ${app.getVersion()}`, enabled: false }]))
+    tray.setContextMenu (Menu.buildFromTemplate([{ 
+        label: `Exit ${app.getVersion()}`, 
+        click: _ => app.quit(),  
+    }]))
 
     checkClipboardForChange(clipboard, text => {
         stack = addToStack(text, stack)
