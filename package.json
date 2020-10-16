@@ -16,9 +16,6 @@
 	"build": {
 		"appId": "com.ollegk.clipboard.watcher",
 		"productName": "Clipboard Watcher",
-		"mac": {
-			"category": "public.app-category.lifestyle"
-		},
 		"dmg": {
 			"icon": false
 		},
