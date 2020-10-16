@@ -16,10 +16,15 @@ function formatItem(item) {
 }
 
 function formatMenuTemplateForStack(clipboard, stack) {
-    return stack.map ((item, i) => { return {
+    const arr = stack.map ((item, i) => { return {
         label: `Copy: ${formatItem(item)}`,
         click: _ => clipboard.writeText(item),
     }})
+    arr.splice(0, 0, {
+        label: `Version ${app.getVersion()}`
+    })
+        
+    return arr
 }
 
 function checkClipboardForChange(clipboard, onChange) {
@@ -39,7 +44,7 @@ app.on('ready', _ => {
     
     let stack = []
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
-    tray.setContextMenu (Menu.buildFromTemplate([{ label: '<Empty>', enabled: false }]))
+    tray.setContextMenu (Menu.buildFromTemplate([{ label: `Version ${app.getVersion()}`, enabled: false }]))
 
     checkClipboardForChange(clipboard, text => {
         stack = addToStack(text, stack)
