@@ -1,6 +1,6 @@
 {
 	"name": "ClipboardWatcher",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"main": "src/main.js",
 	"scripts": {
 		"start": "electron .",
@@ -15,20 +15,25 @@
 	},
 	"build": {
 		"appId": "com.ollegk.clipboard.watcher",
-		"productName": "Clipboard Watcher",
+    "productName": "Clipboard Watcher",
+    "publish": {
+      "provider": "github",
+      "owner": "OllegK",
+      "repo": "ClipboardWatcher"
+    },
     "mac": {
-      "publish": "github",
+      "publish": ["github"],
       "category": "public.app-category.social-networking"
     },
 		"linux": {
-      "publish": "github",
+      "publish": ["github"],
 			"target": [
 				"AppImage"
 			],
 			"category": "Office"
     },
     "win": {
-      "publish": "github",
+      "publish": ["github"],
       "target": [
         "nsis",
         "portable"
