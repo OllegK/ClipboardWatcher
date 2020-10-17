@@ -16,16 +16,19 @@
 	"build": {
 		"appId": "com.ollegk.clipboard.watcher",
 		"productName": "Clipboard Watcher",
-		"dmg": {
-			"icon": false
-		},
+    "mac": {
+      "publish": "github",
+      "category": "public.app-category.social-networking"
+    },
 		"linux": {
+      "publish": "github",
 			"target": [
 				"AppImage"
 			],
 			"category": "Office"
     },
     "win": {
+      "publish": "github",
       "target": [
         "nsis",
         "portable"
