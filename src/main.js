@@ -1,11 +1,14 @@
-const { autoUpdater } = require('electron-updater')
 const electron = require('electron')
 const path = require('path')
-
+const { autoUpdater } = require('electron-updater')
 const { app, Tray, Menu, clipboard } = electron
 
 const STACK_SIZE = 5;
 const ITEM_MAX_LENGTH = 20;
+const menuItem = { 
+    label: `Exit ${app.getVersion()}`, 
+    click: _ => app.quit(),  
+}
 
 function addToStack(item, stack) {
     return [item].concat(stack.length >= STACK_SIZE ? stack.slice(0, STACK_SIZE - 1) : stack)
@@ -20,11 +23,7 @@ function formatMenuTemplateForStack(clipboard, stack) {
         label: `Copy: ${formatItem(item)}`,
         click: _ => clipboard.writeText(item),
     }})
-    arr.splice(0, 0, {
-        label: `Exit ${app.getVersion()}`, 
-        click: _ => app.quit(),  
-    })
-        
+    arr.splice(0, 0, menuItem)
     return arr
 }
 
@@ -40,18 +39,19 @@ function checkClipboardForChange(clipboard, onChange) {
     }, 1000)
 }
 
+const setContextMenu = () => {
+    tray.setContextMenu (Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)))
+}
+
 app.on('ready', _ => {
     autoUpdater.checkForUpdatesAndNotify();
                                       
-    let stack = []
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
-    tray.setContextMenu (Menu.buildFromTemplate([{ 
-        label: `Exit ${app.getVersion()}`, 
-        click: _ => app.quit(),  
-    }]))
+    let stack = clipboard.readText() ? [clipboard.readText()] : []
+    setContextMenu();
 
     checkClipboardForChange(clipboard, text => {
         stack = addToStack(text, stack)
-        tray.setContextMenu(Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)))
+        setContextMenu();
     })
 })
