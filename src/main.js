@@ -48,6 +48,16 @@ function setContextMenu (tray, stack) {
 app.on('ready', _ => {
     // autoUpdater.init();
     autoUpdater.checkForUpdatesAndNotify()
+    console.log('started...')
+
+    const gotTheLock = app.requestSingleInstanceLock()
+    if (!gotTheLock) {
+        console.log('Second instance.........')
+        app.quit()
+    }
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        console.log('inside second instance.........', event, commandLine, workingDirectory)    
+    })
                                       
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
     let stack = clipboard.readText() ? [clipboard.readText()] : []
