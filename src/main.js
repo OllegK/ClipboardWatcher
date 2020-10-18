@@ -5,10 +5,12 @@ const { app, Tray, Menu, clipboard } = electron
 
 const STACK_SIZE = 5;
 const ITEM_MAX_LENGTH = 20;
-const menuItem = { 
+const menuItems = [{ 
     label: `Exit ${app.getVersion()}`, 
     click: _ => app.quit(),  
-}
+}, {
+    type: 'separator',
+}]
 
 function addToStack(item, stack) {
     return [item].concat(stack.length >= STACK_SIZE ? stack.slice(0, STACK_SIZE - 1) : stack)
@@ -19,12 +21,11 @@ function formatItem(item) {
 }
 
 function formatMenuTemplateForStack(clipboard, stack) {
-    const arr = stack.map ((item, i) => { return {
+    const arr = stack.map ((item) => { return {
         label: `Copy: ${formatItem(item)}`,
         click: _ => clipboard.writeText(item),
     }})
-    arr.splice(0, 0, menuItem)
-    return arr
+    return menuItems.concat(arr)
 }
 
 function checkClipboardForChange(clipboard, onChange) {
@@ -39,19 +40,19 @@ function checkClipboardForChange(clipboard, onChange) {
     }, 1000)
 }
 
-const setContextMenu = () => {
+function setContextMenu (tray, stack) {
     tray.setContextMenu (Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)))
 }
 
 app.on('ready', _ => {
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdatesAndNotify()
                                       
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
     let stack = clipboard.readText() ? [clipboard.readText()] : []
-    setContextMenu();
+    setContextMenu(tray, stack)
 
     checkClipboardForChange(clipboard, text => {
         stack = addToStack(text, stack)
-        setContextMenu();
+        setContextMenu(tray, stack)
     })
 })
