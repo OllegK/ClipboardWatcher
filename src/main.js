@@ -1,6 +1,7 @@
 const electron = require('electron')
 const path = require('path')
 const { autoUpdater } = require('electron-updater')
+// const autoUpdater = require('./autoupdater');
 const { app, Tray, Menu, clipboard } = electron
 
 const STACK_SIZE = 5;
@@ -45,6 +46,7 @@ function setContextMenu (tray, stack) {
 }
 
 app.on('ready', _ => {
+    // autoUpdater.init();
     autoUpdater.checkForUpdatesAndNotify()
                                       
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
