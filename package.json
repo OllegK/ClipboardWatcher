@@ -12,7 +12,9 @@
 	"devDependencies": {
 		"electron": "^10.1.3",
 		"electron-builder": "^22.9.1",
-		"eslint": "^7.11.0"
+		"eslint": "^7.11.0",
+		"eslint-config-airbnb-base": "^14.2.0",
+		"eslint-plugin-import": "^2.22.1"
 	},
 	"build": {
 		"appId": "com.ollegk.clipboard.watcher",
