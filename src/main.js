@@ -1,4 +1,4 @@
-const { autoUpdater } = require("electron-updater")
+const { autoUpdater } = require('electron-updater')
 const electron = require('electron')
 const path = require('path')
 
@@ -42,7 +42,7 @@ function checkClipboardForChange(clipboard, onChange) {
 
 app.on('ready', _ => {
     autoUpdater.checkForUpdatesAndNotify();
-    
+                                      
     let stack = []
     const tray = new Tray(path.join(__dirname, 'icon16.png'))
     tray.setContextMenu (Menu.buildFromTemplate([{ 
