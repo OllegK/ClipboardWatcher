@@ -3,6 +3,9 @@ const path = require('path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
+const { autoLaunch } = require('./autolaunch')
+autoLaunch();
+
 require('electron-reload')(__dirname, {
   electron: path.join(process.cwd(), 'node_modules', '.bin', 'electron.cmd'),
 });
@@ -70,7 +73,7 @@ app.on('ready', (_) => {
     console.log('inside second instance..........', event, commandLine, workingDirectory);
   });
 
-  const tray = new Tray(path.join(__dirname, 'icon16.png'));
+  const tray = new Tray(path.join(__dirname, 'img/icon16.png'));
   let stack = clipboard.readText() ? [clipboard.readText()] : [];
   setContextMenu(tray, stack);
 
