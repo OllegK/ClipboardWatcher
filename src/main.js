@@ -1,12 +1,21 @@
 const electron = require('electron');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
+const log = require('electron-log');
+
+require('electron-reload')(__dirname, {
+  electron: path.join(process.cwd(), 'node_modules', '.bin', 'electron.cmd'),
+});
+
 // const autoUpdater = require('./autoupdater');
 const {
   app, Tray, Menu, clipboard,
 } = electron;
 
-const STACK_SIZE = 5;
+// Log a message
+log.info('Application started...');
+
+const STACK_SIZE = 20;
 const ITEM_MAX_LENGTH = 20;
 const menuItems = [{
   label: `Exit ${app.getVersion()}`,
