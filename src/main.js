@@ -3,8 +3,10 @@ const path = require('path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
-const { template } = require('./traymenutemplate')
+const { template } = require('./traymenutemplate');
+
 const { autoLaunch } = require('./autolaunch');
+
 autoLaunch();
 
 // const autoUpdater = require('./autoupdater');
@@ -13,9 +15,9 @@ const {
 } = electron;
 
 if (!app.isPackaged) {
-  require('electron-reload')(__dirname, {
+  require('electron-reload')(__dirname, { // eslint-disable-line
     electron: path.join(process.cwd(), 'node_modules', '.bin', 'electron.cmd'),
-  });  
+  });
 }
 
 // Log a message
@@ -32,19 +34,19 @@ function formatItem(item) {
   return item && item.length > ITEM_MAX_LENGTH ? `${item.substr(0, ITEM_MAX_LENGTH)}...` : item;
 }
 
-function formatMenuTemplateForStack(clipboard, stack) {
+function formatMenuTemplateForStack(clip, stack) {
   const arr = stack.map((item) => ({
     label: `Copy: ${formatItem(item)}`,
-    click: (_) => clipboard.writeText(item),
+    click: () => clip.writeText(item),
   }));
   return template.concat(arr);
 }
 
-function checkClipboardForChange(clipboard, onChange) {
-  let cache = clipboard.readText();
+function checkClipboardForChange(clip, onChange) {
+  let cache = clip.readText();
   let latest;
-  setInterval((_) => {
-    latest = clipboard.readText();
+  setInterval(() => {
+    latest = clip.readText();
     if (latest !== cache) {
       cache = latest;
       onChange(cache);
@@ -56,18 +58,16 @@ function setContextMenu(tray, stack) {
   tray.setContextMenu(Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)));
 }
 
-app.on('ready', (_) => {
+app.on('ready', () => {
   // autoUpdater.init();
   autoUpdater.checkForUpdatesAndNotify();
-  console.log('started...');
 
   const gotTheLock = app.requestSingleInstanceLock();
   if (!gotTheLock) {
-    console.log('Second instance.........');
     app.quit();
   }
   app.on('second-instance', (event, commandLine, workingDirectory) => {
-    console.log('inside second instance..........', event, commandLine, workingDirectory);
+    log.info('inside second instance..........', event, commandLine, workingDirectory);
   });
 
   const tray = new Tray(path.join(__dirname, 'img/icon16.png'));

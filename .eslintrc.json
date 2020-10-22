@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "airbnb"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "script"
+  },
+  "env": {
+    "es6": true,
+    "commonjs": true,
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "linebreak-style": "off",
+    "yoda": 0,
+    "no-console": 1,
+    "max-len": [
+      1,
+      120
+    ]
+  }
+}

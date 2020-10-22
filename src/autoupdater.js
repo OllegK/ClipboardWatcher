@@ -1,8 +1,8 @@
-
-const {BrowserWindow} = require('electron');
+const { BrowserWindow } = require('electron');
 const url = require('url');
 const path = require('path');
-const {autoUpdater} = require('electron-updater');
+const { autoUpdater } = require('electron-updater');
+
 let win;
 
 exports.init = () => {
@@ -12,14 +12,14 @@ exports.init = () => {
       height: 200,
       icon: `${__dirname}/../browser/img/icon.png`,
       maxWidth: 400,
-      maxHeight: 200
+      maxHeight: 200,
     });
 
     win.setTitle('IGdm software update');
     win.loadURL(url.format({
       pathname: path.join(__dirname, '../browser/autoupdate.html'),
       protocol: 'file:',
-      slashes: true
+      slashes: true,
     }));
 
     win.on('closed', () => win = null);

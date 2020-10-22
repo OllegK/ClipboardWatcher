@@ -1,16 +1,16 @@
 const AutoLaunch = require('auto-launch');
 
 const autoLauncher = new AutoLaunch({
-  name: 'ClipboardWatcher'
+  name: 'ClipboardWatcher',
 });
 
 const autoLaunch = () => {
-  autoLauncher.isEnabled().then(function(isEnabled) {
+  autoLauncher.isEnabled().then((isEnabled) => {
     if (isEnabled) return;
     autoLauncher.enable();
-  }).catch(function (err) {
+  }).catch((err) => {
     throw err;
-  });  
-}
+  });
+};
 
 exports.autoLaunch = autoLaunch;
