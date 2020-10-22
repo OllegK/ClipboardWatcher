@@ -3,29 +3,26 @@ const path = require('path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
-const { autoLaunch } = require('./autolaunch')
+const { template } = require('./traymenutemplate')
+const { autoLaunch } = require('./autolaunch');
 autoLaunch();
-
-require('electron-reload')(__dirname, {
-  electron: path.join(process.cwd(), 'node_modules', '.bin', 'electron.cmd'),
-});
 
 // const autoUpdater = require('./autoupdater');
 const {
   app, Tray, Menu, clipboard,
 } = electron;
 
+if (!app.isPackaged) {
+  require('electron-reload')(__dirname, {
+    electron: path.join(process.cwd(), 'node_modules', '.bin', 'electron.cmd'),
+  });  
+}
+
 // Log a message
 log.info('Application started...');
 
 const STACK_SIZE = 20;
 const ITEM_MAX_LENGTH = 20;
-const menuItems = [{
-  label: `Exit ${app.getVersion()}`,
-  click: (_) => app.quit(),
-}, {
-  type: 'separator',
-}];
 
 function addToStack(item, stack) {
   return [item].concat(stack.length >= STACK_SIZE ? stack.slice(0, STACK_SIZE - 1) : stack);
@@ -40,7 +37,7 @@ function formatMenuTemplateForStack(clipboard, stack) {
     label: `Copy: ${formatItem(item)}`,
     click: (_) => clipboard.writeText(item),
   }));
-  return menuItems.concat(arr);
+  return template.concat(arr);
 }
 
 function checkClipboardForChange(clipboard, onChange) {
