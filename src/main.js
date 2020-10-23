@@ -47,7 +47,7 @@ function checkClipboardForChange(clip, onChange) {
   let latest;
   setInterval(() => {
     latest = clip.readText();
-    if (latest !== cache) {
+    if (latest && latest !== cache) {
       cache = latest;
       onChange(cache);
     }
