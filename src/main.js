@@ -9,7 +9,6 @@ const { autoLaunch } = require('./autolaunch');
 
 autoLaunch();
 
-// const autoUpdater = require('./autoupdater');
 const {
   app, Tray, Menu, clipboard,
 } = electron;
@@ -20,7 +19,6 @@ if (!app.isPackaged) {
   });
 }
 
-// Log a message
 log.info('Application started...');
 
 const STACK_SIZE = 20;
@@ -59,7 +57,6 @@ function setContextMenu(tray, stack) {
 }
 
 app.on('ready', () => {
-  // autoUpdater.init();
   autoUpdater.checkForUpdatesAndNotify();
 
   const gotTheLock = app.requestSingleInstanceLock();
