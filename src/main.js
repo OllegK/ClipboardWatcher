@@ -3,11 +3,7 @@ const path = require('path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
-const { template } = require('./traymenutemplate');
-
-const { autoLaunch } = require('./autolaunch');
-
-autoLaunch();
+const { getTemplate } = require('./traymenutemplate');
 
 const {
   app, Tray, Menu, clipboard,
@@ -37,7 +33,7 @@ function formatMenuTemplateForStack(clip, stack) {
     label: `Copy: ${formatItem(item)}`,
     click: () => clip.writeText(item),
   }));
-  return template.concat(arr);
+  return getTemplate(arr);
 }
 
 function checkClipboardForChange(clip, onChange) {
@@ -53,14 +49,20 @@ function checkClipboardForChange(clip, onChange) {
 }
 
 function setContextMenu(tray, stack) {
-  tray.setContextMenu(Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)));
+  formatMenuTemplateForStack(clipboard, stack).then((template) => {
+    tray.setContextMenu(Menu.buildFromTemplate(template));
+  });
+  // tray.setContextMenu(Menu.buildFromTemplate(formatMenuTemplateForStack(clipboard, stack)));
 }
 
 app.on('ready', () => {
+  log.info('app ready start...');
+
   autoUpdater.checkForUpdatesAndNotify();
 
   const gotTheLock = app.requestSingleInstanceLock();
   if (!gotTheLock) {
+    log.info('Quitting as there is not lock');
     app.quit();
   }
   app.on('second-instance', (event, commandLine, workingDirectory) => {

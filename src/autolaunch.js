@@ -1,16 +1,27 @@
 const AutoLaunch = require('auto-launch');
+const log = require('electron-log');
 
 const autoLauncher = new AutoLaunch({
   name: 'ClipboardWatcher',
 });
 
-const autoLaunch = () => {
+const autoLauncherStatus = () => new Promise((resolve) => {
   autoLauncher.isEnabled().then((isEnabled) => {
-    if (isEnabled) return;
-    autoLauncher.enable();
-  }).catch((err) => {
-    throw err;
+    log.info(`Checking autolaunch status ${isEnabled}`);
+    resolve(isEnabled);
+  });
+});
+
+const toggleAutoLauncher = () => {
+  autoLauncherStatus().then((status) => {
+    if (status) {
+      log.info('Disable auto-launch');
+      return autoLauncher.disable();
+    }
+    log.info('Enable auto-launch');
+    return autoLauncher.enable();
   });
 };
 
-exports.autoLaunch = autoLaunch;
+exports.autoLauncherStatus = autoLauncherStatus;
+exports.toggleAutoLauncher = toggleAutoLauncher;
