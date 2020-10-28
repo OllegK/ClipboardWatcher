@@ -70,6 +70,7 @@ app.on('ready', () => {
   });
 
   const tray = new Tray(path.join(__dirname, 'img/icon16.png'));
+  tray.setToolTip(app.name);
   let stack = clipboard.readText() ? [clipboard.readText()] : [];
   setContextMenu(tray, stack);
 
