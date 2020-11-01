@@ -4,7 +4,8 @@ const { autoLauncherStatus, toggleAutoLauncher } = require('./autolaunch');
 
 const template = [{
   label: `Exit ${app.getVersion()}`,
-  click: () => app.quit(),
+  // click: () => app.quit(),
+  role: 'quit',
 }, {
   type: 'separator',
 }];
