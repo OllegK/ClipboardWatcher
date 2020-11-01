@@ -1,7 +1,7 @@
 const electron = require('electron');
 const path = require('path');
-const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
+const updater = require('./updater');
 
 const { getTemplate } = require('./traymenutemplate');
 
@@ -58,8 +58,6 @@ function setContextMenu(tray, stack) {
 app.on('ready', () => {
   log.info('app ready start...');
 
-  autoUpdater.checkForUpdatesAndNotify();
-
   const gotTheLock = app.requestSingleInstanceLock();
   if (!gotTheLock) {
     log.info('Quitting as there is not lock');
@@ -68,6 +66,8 @@ app.on('ready', () => {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     log.info('inside second instance..........', event, commandLine, workingDirectory);
   });
+
+  setTimeout(updater, 3000);
 
   const tray = new Tray(path.join(__dirname, 'img/icon16.png'));
   tray.setToolTip(app.name);
