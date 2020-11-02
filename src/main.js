@@ -1,13 +1,16 @@
 const electron = require('electron');
 const path = require('path');
 const log = require('electron-log');
-const updater = require('./updater');
+const Store = require('electron-store');
 
+const updater = require('./updater');
 const { getTemplate } = require('./traymenutemplate');
 
 const {
   app, Tray, Menu, clipboard,
 } = electron;
+
+const store = new Store();
 
 if (!app.isPackaged) {
   require('electron-reload')(__dirname, { // eslint-disable-line
@@ -71,11 +74,16 @@ app.on('ready', () => {
 
   const tray = new Tray(path.join(__dirname, 'img/icon16.png'));
   tray.setToolTip(app.name);
-  let stack = clipboard.readText() ? [clipboard.readText()] : [];
+
+  // let stack = clipboard.readText() ? [clipboard.readText()] : [];
+  // TODO: keep it, reading from clipboard and remove duplicates
+  let stack = store.get('items') || [];
+
   setContextMenu(tray, stack);
 
   checkClipboardForChange(clipboard, (text) => {
     stack = addToStack(text, stack);
+    store.set('items', stack);
     setContextMenu(tray, stack);
   });
 });
